@@ -50,11 +50,15 @@ fun WeatherAppBar(
         },
         actions = {
             if (isMainScreen) {
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = {
+                    onAddActionClicked.invoke()
+                }) {
                     Icon(imageVector = Icons.Default.Search,
                         contentDescription = "search icon")
                 }
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = {
+                    onButtonClicked.invoke()
+                }) {
                     Icon(imageVector = Icons.Rounded.MoreVert,
                         contentDescription = "more icon")
                 }

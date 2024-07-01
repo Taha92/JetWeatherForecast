@@ -1,11 +1,9 @@
 package com.example.jetweatherforecast.screen.main
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,13 +11,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -29,23 +23,16 @@ import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.rememberImagePainter
-import com.example.jetweatherforecast.R
 import com.example.jetweatherforecast.data.DataOrException
 import com.example.jetweatherforecast.model.Weather
 import com.example.jetweatherforecast.model.WeatherItem
+import com.example.jetweatherforecast.navigation.WeatherScreens
 import com.example.jetweatherforecast.util.formatDate
-import com.example.jetweatherforecast.util.formatDateTime
 import com.example.jetweatherforecast.util.formatDecimals
 import com.example.jetweatherforecast.widget.HumidityWindPressureRow
 import com.example.jetweatherforecast.widget.SunsetSunRiseRow
@@ -54,13 +41,17 @@ import com.example.jetweatherforecast.widget.WeatherDetailRow
 import com.example.jetweatherforecast.widget.WeatherStateImage
 
 @Composable
-fun MainScreen(navController: NavController,
-               mainViewModel: MainViewModel = hiltViewModel()) {
+fun MainScreen(
+    navController: NavController,
+    mainViewModel: MainViewModel = hiltViewModel(),
+    city: String?
+) {
+    Log.e("TAG", "MainScreen: $city")
 
     val weatherData = produceState<DataOrException<Weather, Boolean, Exception>>(
         initialValue = DataOrException(loading = true)
     ) {
-        value = mainViewModel.getWeatherData(city = "maputo")
+        value = mainViewModel.getWeatherData(city = city.toString())
     }.value
 
     if (weatherData.loading == true) {
@@ -76,6 +67,9 @@ fun MainScaffold(weather: Weather, navController: NavController) {
         topBar = {
         WeatherAppBar(title = weather.city.name + " ,${weather.city.country}",
             navController = navController,
+            onAddActionClicked = {
+                                 navController.navigate(WeatherScreens.SearchScreen.name)
+            },
             elevation = 5.dp) {
             Log.e("TAG", "MainScaffold: Button Clicked")
         }
