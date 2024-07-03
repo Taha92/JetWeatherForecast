@@ -81,9 +81,9 @@ fun SettingsScreen(navController: NavController,
                         unitToggleState = !it
 
                         choiceState = if (unitToggleState) {
-                            "Imperial (F)"
-                        } else {
                             "Metric (C)"
+                        } else {
+                            "Imperial (F)"
                         }
                     },
                     modifier = Modifier
@@ -92,7 +92,7 @@ fun SettingsScreen(navController: NavController,
                         .padding(5.dp)
                         .background(Color.Magenta.copy(alpha = 0.4f))
                 ) {
-                    Text(text = if (unitToggleState) "Fahrenheit ºF" else "Celsius ºC" )
+                    Text(text = if (unitToggleState) "Celsius ºC" else "Fahrenheit ºF" )
                 }
                 
                 Button(onClick = {
