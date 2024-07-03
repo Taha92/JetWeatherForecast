@@ -97,53 +97,61 @@ fun WeatherAppBar(
                 IconButton(onClick = {
                     onAddActionClicked.invoke()
                 }) {
-                    Icon(imageVector = Icons.Default.Search,
-                        contentDescription = "search icon")
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "search icon"
+                    )
                 }
                 IconButton(onClick = {
                     showDialog.value = true
                 }) {
-                    Icon(imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = "more icon")
+                    Icon(
+                        imageVector = Icons.Rounded.MoreVert,
+                        contentDescription = "more icon"
+                    )
                 }
             } else {
                 Box {}
             }
         },
         navigationIcon = {
-                         if (icon != null) {
-                             Icon(imageVector = icon,
-                                 contentDescription = null,
-                                 tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                                 modifier = Modifier
-                                     .clickable {
-                                         onButtonClicked.invoke()
-                                     })
-                         }
+            if (icon != null) {
+                Icon(imageVector = icon,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                    modifier = Modifier
+                        .clickable {
+                            onButtonClicked.invoke()
+                        })
+            }
 
             if (isMainScreen) {
                 val isAlreadyFacList = favoriteViewModel
                     .favList.collectAsState().value.filter { item ->
-                    (item.cityName == title.split(",")[0])
-                }
+                        (item.cityName == title.split(",")[0])
+                    }
 
                 if (isAlreadyFacList.isEmpty()) {
-                    Icon(imageVector = Icons.Default.Favorite,
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
                         contentDescription = "favorite icon",
                         modifier = Modifier
                             .scale(0.9f)
                             .clickable {
                                 val dataList = title.split(",")
-                                favoriteViewModel.insertFavorite(
-                                    Favorite(
-                                        cityName = dataList[0], // city name
-                                        country = dataList[1]    // country code
+                                favoriteViewModel
+                                    .insertFavorite(
+                                        Favorite(
+                                            cityName = dataList[0], // city name
+                                            country = dataList[1]    // country code
+                                        )
                                     )
-                                ).run {
-                                    showIt.value = true
-                                }
+                                    .run {
+                                        showIt.value = true
+                                    }
                             },
-                        tint = Color.Red.copy(alpha = 0.6f))
+                        tint = Color.Red.copy(alpha = 0.6f)
+                    )
                 } else {
                     showIt.value = false
                     Box {}
@@ -180,12 +188,14 @@ fun ShowSettingDropDownMenu(
     }
     val items = listOf("About", "Favorites", "Settings")
 
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentSize(Alignment.TopEnd)
-        .absolutePadding(top = 45.dp, right = 20.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentSize(Alignment.TopEnd)
+            .absolutePadding(top = 45.dp, right = 20.dp)
     ) {
-        DropdownMenu(expanded = expanded,
+        DropdownMenu(
+            expanded = expanded,
             onDismissRequest = { expanded = false },
             modifier = Modifier
                 .width(140.dp)
@@ -197,13 +207,13 @@ fun ShowSettingDropDownMenu(
                         text = text,
                         modifier = Modifier
                             .clickable {
-                                       navController.navigate(
-                                           when (text) {
-                                               "About" -> WeatherScreens.AboutScreen.name
-                                               "Favorites" -> WeatherScreens.FavoriteScreen.name
-                                               else -> WeatherScreens.SettingsScreen.name
-                                           }
-                                       )
+                                navController.navigate(
+                                    when (text) {
+                                        "About" -> WeatherScreens.AboutScreen.name
+                                        "Favorites" -> WeatherScreens.FavoriteScreen.name
+                                        else -> WeatherScreens.SettingsScreen.name
+                                    }
+                                )
                             },
                         fontWeight = FontWeight.W300
                     )
@@ -220,6 +230,13 @@ fun ShowSettingDropDownMenu(
                         )
                     },
                     onClick = {
+                        navController.navigate(
+                            when (text) {
+                                "About" -> WeatherScreens.AboutScreen.name
+                                "Favorites" -> WeatherScreens.FavoriteScreen.name
+                                else -> WeatherScreens.SettingsScreen.name
+                            }
+                        )
                         expanded = false
                         showDialog.value = false
                     })
